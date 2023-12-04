@@ -1,0 +1,2 @@
+exec: bash /ssh-init.sh
+oneshot: true
