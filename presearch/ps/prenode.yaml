@@ -1,0 +1,13 @@
+exec: |
+  bash -c '
+    docker run -dt \
+      --name presearch-node \
+      --restart=unless-stopped \
+      -v presearch-node-storage:/app/node \
+      -e REGISTRATION_CODE="$PRESEARCH_REGISTRATION_CODE" \
+      presearch/node
+  '
+after: 
+  - prerestorer
+
+oneshot: true

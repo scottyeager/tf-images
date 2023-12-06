@@ -1,0 +1,4 @@
+exec: /scripts/nextcloud_conf.sh
+oneshot: true
+after:
+    - nextcloud

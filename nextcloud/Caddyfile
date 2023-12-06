@@ -1,0 +1,50 @@
+{
+	order replace after encode
+	servers {
+		trusted_proxies static 100.64.0.0/10 10.0.0.0/8
+	}
+}
+
+
+{$DOMAIN}:{$PORT} {
+	handle_path /aio* {
+		replace {
+			href="/ href="/aio/
+			src="/ src="/aio/
+			action=" action="/aio
+			url(' url('/aio
+			`value="" placeholder="nextcloud.yourdomain.com"` `value="{$DOMAIN}"`
+			`"Submit domain"` `"Submit domain" id="domain-submit"` 
+			{$REPLACEMENTS}
+			<body> {$BODY}
+		}
+
+		reverse_proxy localhost:8000 {
+			header_down Location "^/(.*)$" "/aio/$1"
+			header_down Refresh "^/(.*)$" "/aio/$1"
+		}
+			
+	}
+
+	redir /api/auth/getlogin /aio{uri}
+
+	reverse_proxy localhost:11000
+
+	handle_errors {
+		@502-aio expression {err.status_code} == 502 && path('/aio*')
+		handle @502-aio {
+			header Content-Type text/html
+			respond <<HTML
+				<html>
+				  <head><title>Nextcloud</title></head>
+				  <body>Your Nextcloud management interface isn't ready. If you just deployed this instance, please wait a minute and refresh the page.</body>
+				</html>
+				HTML 200
+		}
+
+		@502 expression {err.status_code} == 502
+		handle @502 {
+			redir /* /aio
+		}
+	}
+}

@@ -1,0 +1,14 @@
+exec: |
+  bash -c '
+  docker run -d \
+    --name presearch-auto-updater \
+    --restart=unless-stopped \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    presearch/auto-updater \
+    --cleanup --interval 900 \
+    presearch-auto-updater presearch-node
+  '
+after: 
+  - prerestorer
+
+oneshot: true

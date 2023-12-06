@@ -1,0 +1,188 @@
+{
+    "apps":{
+		"layer4": {
+			"servers": {
+				"example": {
+					"listen": [":443"],
+					"routes": [
+						{
+							"match": [
+								{
+									"ssh": {}
+								}
+							],
+							"handle": [
+								{
+									"handler": "proxy",
+									"upstreams": [
+										{"dial": ["localhost:20"]}
+									]
+								}
+							]
+						},
+						{
+							"match": [
+								{
+									"tls": {}
+								}
+							],
+							"handle": [
+								{
+									"handler": "proxy",
+									"upstreams": [
+										{"dial": ["localhost:4443"]}
+									]
+								}
+							]
+						},
+						{
+							"handle": [
+								{
+									"handler": "proxy",
+									"upstreams": [
+										{"dial": ["localhost:3478"]}
+									]
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+       "http":{
+            "https_port": 4443,
+            "servers":{
+                "srv0":{
+                    "listen":[
+                        ":4443"
+                    ],
+                    "routes":[
+                        {
+                        "match":[
+                            {
+                                "host":[
+                                    "nc81ncuhz0083yj.gent01.test.grid.tf"
+                                ]
+                            }
+                        ],
+                        "handle":[
+                            {
+                                "handler":"subroute",
+                                "routes":[
+                                    {
+                                    "handle":[
+                                        {
+                                            "handler":"subroute",
+                                            "routes":[
+                                                {
+                                                "handle":[
+                                                    {
+                                                        "handler":"rewrite",
+                                                        "strip_path_prefix":"/aio"
+                                                    }
+                                                ]
+                                                },
+                                                {
+                                                "handle":[
+                                                    {
+                                                        "handler":"replace_response",
+                                                        "replacements":[
+                                                            {
+                                                            "replace":"href=\"/aio/",
+                                                            "search":"href=\"/"
+                                                            },
+                                                            {
+                                                            "replace":"src=\"/aio/",
+                                                            "search":"src=\"/"
+                                                            },
+                                                            {
+                                                            "replace":"action=\"/aio",
+                                                            "search":"action=\""
+                                                            },
+                                                            {
+                                                            "replace":"url('/aio",
+                                                            "search":"url('"
+                                                            },
+                                                            {
+                                                            "replace":"value=\"nc81ncuhz0083yj.gent01.test.grid.tf\"",
+                                                            "search":"value=\"\" placeholder=\"nextcloud.yourdomain.com\""
+                                                            },
+                                                            {
+                                                            "replace":"\"Submit domain\" id=\"domain-submit\"",
+                                                            "search":"\"Submit domain\""
+                                                            },
+                                                            {
+                                                            "replace":"\u003cbody onload=\"if (document.getElementById('domain-submit')) {document.getElementById('domain-submit').click()}\"\u003e",
+                                                            "search":"\u003cbody\u003e"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "handler":"reverse_proxy",
+                                                        "headers":{
+                                                            "response":{
+                                                            "replace":{
+                                                                "Location":[
+                                                                    {
+                                                                        "replace":"/aio/$1",
+                                                                        "search_regexp":"^/(.*)$"
+                                                                    }
+                                                                ],
+                                                                "Refresh":[
+                                                                    {
+                                                                        "replace":"/aio/$1",
+                                                                        "search_regexp":"^/(.*)$"
+                                                                    }
+                                                                ]
+                                                            }
+                                                            }
+                                                        },
+                                                        "upstreams":[
+                                                            {
+                                                            "dial":"localhost:8000"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "match":[
+                                        {
+                                            "path":[
+                                                "/aio*"
+                                            ]
+                                        }
+                                    ]
+                                    },
+                                    {
+                                    "handle":[
+                                        {
+                                            "handler":"reverse_proxy",
+                                            "upstreams":[
+                                                {
+                                                "dial":"localhost:11000"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "terminal":true
+                        }
+                    ],
+                    "trusted_proxies":{
+                        "ranges":[
+                        "100.64.0.0/10",
+                        "10.0.0.0/8"
+                        ],
+                        "source":"static"
+                    }
+                }
+            }
+        }
+    }
+}

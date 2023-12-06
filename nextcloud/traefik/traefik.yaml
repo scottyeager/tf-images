@@ -1,0 +1,19 @@
+entryPoints:
+  web:
+   address: ":80"
+  traefik:
+    address: ":8081"
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yaml
+
+experimental:
+  plugins:
+    rewritebody:
+      moduleName: "github.com/traefik/plugin-rewritebody"
+      version: "v0.3.1"
+
+api:
+  insecure: true
+

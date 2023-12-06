@@ -1,0 +1,11 @@
+exec: |
+  bash -c '
+    docker pull presearch/node && sleep 20
+  '
+
+test: bash -c 'docker images | grep presearch/node'
+
+after: 
+  - dockerd
+
+oneshot: true

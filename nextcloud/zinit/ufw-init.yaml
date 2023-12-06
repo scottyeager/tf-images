@@ -1,0 +1,3 @@
+exec: /scripts/ufw_init.sh
+oneshot: true
+

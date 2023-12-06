@@ -1,0 +1,2 @@
+exec: /scripts/caddy.sh
+oneshot: true

@@ -1,0 +1,25 @@
+{
+	order replace after encode
+}
+
+scotts-nextcloud.duckdns.org:443 {
+	handle_path /aio* {
+		replace {
+			href="/ href="/aio/
+        		src="/ src="/aio/
+        		action=" action="/aio
+        		url(' url('/aio
+			`value="" placeholder="nextcloud.yourdomain.com"` `value="scotts-nextcloud.duckdns.org"`
+			`"Submit domain"` `"Submit domain" id="domain-submit"`
+			<body> `"<body onload="if(document.getElementById('domain-submit')) {document.getElementById('domain-submit').click()}">`
+		}
+		reverse_proxy localhost:8000 {
+			header_down Location "^/(.*)$" "/aio/$1"
+            header_down Refresh "^/(.*)$" "/aio/$1"
+		}
+	}
+	handle {
+		redir / /aio
+	}
+	reverse_proxy localhost:11000
+}

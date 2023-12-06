@@ -1,0 +1,31 @@
+http:
+  routers:
+    Router-1:
+      rule: "PathPrefix(`/aio`)"
+      service: "service-1"
+    Router-2:
+      rule: "PathPrefix(`/`)"
+      service: "service-2"
+
+  middlewares:
+    test-replacepath:
+      replacePath:
+        path: "/foo"
+
+    my-rewritebody:
+          plugin:
+            rewrite:
+              rewrites: 
+                - regex: example
+                  replacement: test
+
+  services:
+    service-1:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8000/"
+    service-2:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:11000/"
+

@@ -1,0 +1,21 @@
+exec: |
+  bash -c '
+    if [ ! -z "$PRESEARCH_BACKUP_PRI_KEY" ] && [ ! -z "$PRESEARCH_BACKUP_PUB_KEY" ] ; then
+      mkdir presearch-node-keys/
+      echo "$PRESEARCH_BACKUP_PRI_KEY"> presearch-node-keys/id_rsa
+      echo "$PRESEARCH_BACKUP_PUB_KEY"> presearch-node-keys/id_rsa.pub
+      chmod -R 644 presearch-node-keys/
+
+      docker run -dt --rm \
+        -v presearch-node-storage:/app/node \
+        --name presearch-restore \
+        presearch/node
+
+      docker cp presearch-node-keys/. presearch-restore:/app/node/.keys/
+      docker stop presearch-restore 
+    fi
+  '
+after: 
+  - puller
+
+oneshot: true
