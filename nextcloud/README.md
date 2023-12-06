@@ -4,7 +4,7 @@
 
 - [Introduction](#introduction)
 - [Create the Docker Image](#create-the-docker-image)
-- [Convert the Docker Image to Zero-OS FList](#convert-the-docker-image-to-zero-os-flist)
+- [Convert the Docker Image to Zero-OS flist](#convert-the-docker-image-to-zero-os-flist)
 - [TFGrid Deployment](#tfgrid-deployment)
   - [Playground Steps](#playground-steps)
   - [Set the DNS Record for Your Domain](#set-the-dns-record-for-your-domain)
@@ -14,11 +14,11 @@
 
 ## Introduction
 
-This Nextcloud All-in-One (AIO) FList can be deployed on a micro VM on the ThreeFold Grid, either via the TF Playground, or Terraform. This FList uses `Ubuntu 22.04` and also includes the preinstalled `openssh-server` package. Docker is installed directly from [www.get.docker.com](https://get.docker.com/). This FList  Nextcloud All-in-One is installed based on the latest Nextcloud All-in-One release from the Docker Hub.
+This Nextcloud All-in-One (AIO) flist can be deployed on a micro VM on the ThreeFold Grid, either via the TF Playground, or Terraform. This flist uses `Ubuntu 22.04` and also includes the preinstalled `openssh-server` package. Docker is installed directly from [www.get.docker.com](https://get.docker.com/). This flist  Nextcloud All-in-One is installed based on the latest Nextcloud All-in-One release from the Docker Hub.
 
-To simply deploy the available FList on the ThreeFold Playground, skip to [this section](#playground-steps).
+To simply deploy the available flist on the ThreeFold Playground, skip to [this section](#playground-steps).
 
-Note that the official FList for Nextcloud All-in-One is the following:
+Note that the official flist for Nextcloud All-in-One is the following:
 
 ```
 https://hub.grid.tf/tf-official-apps/threefoldtech-nextcloudaio-latest.flist
@@ -48,11 +48,11 @@ To create the the Nextcloud AIO image, clone this repository, then build and pus
  
 ***
 
-## Convert the Docker Image to Zero-OS FList
+## Convert the Docker Image to Zero-OS flist
 
-The easiest way to convert the docker image to an FList is by using the [Docker Hub Converter Tool](https://hub.grid.tf/docker-convert). This can be done once you've built and pushed the docker image on the [Docker Hub](https://hub.docker.com/).
+The easiest way to convert the docker image to an flist is by using the [Docker Hub Converter Tool](https://hub.grid.tf/docker-convert). This can be done once you've built and pushed the docker image on the [Docker Hub](https://hub.docker.com/).
 
-> Note: A docker image has already been converted to an FList (see below).
+> Note: A docker image has already been converted to an flist (see below).
 
 * Go to the [ThreeFold Hub](https://hub.grid.tf/).
 * Sign in with the ThreeFold Connect app.
@@ -61,10 +61,10 @@ The easiest way to convert the docker image to an FList is by using the [Docker 
   * Template:
     * `<docker_username>/docker_image_name:tagname`
 * Click `Convert the docker image`.
-* Once the conversion is done, the FList is available as a public link on the ThreeFold Hub.
-* To get the FList URL, go to the [TF Hub main page](https://hub.grid.tf/), scroll down to your 3Bot ID and click on it.
-* Under `Name`, you will see all your available FLists.
-* Right-click on the FList you want and select `Copy Clean Link`. This URL will be used when deploying on the ThreeFold Playground. We show below the template and an example of what the FList URL looks like.
+* Once the conversion is done, the flist is available as a public link on the ThreeFold Hub.
+* To get the flist URL, go to the [TF Hub main page](https://hub.grid.tf/), scroll down to your 3Bot ID and click on it.
+* Under `Name`, you will see all your available flist.
+* Right-click on the flist you want and select `Copy Clean Link`. This URL will be used when deploying on the ThreeFold Playground. We show below the template and an example of what the flist URL looks like.
   * Template:
     * ```
       https://hub.grid.tf/<3BOT_name.3bot>/<docker_username>-<docker_image_name>-<tagname>.flist
@@ -73,7 +73,7 @@ The easiest way to convert the docker image to an FList is by using the [Docker 
 ***
 ## TFGrid Deployment
 
-The easiest way to deploy a micro VM using the Nextcloud AIO FList is to head to to the [ThreeFold Playground](https://play.grid.tf) and deploy a [Micro Virtual Machine](https://play.grid.tf/#/vm) by providing the FList URL. Make sure to select `IPv4`.
+The easiest way to deploy a micro VM using the Nextcloud AIO flist is to head to to the [ThreeFold Playground](https://play.grid.tf) and deploy a [Micro Virtual Machine](https://play.grid.tf/#/vm) by providing the flist URL. Make sure to select `IPv4`.
 
 Make sure to provide the correct entrypoint (`/sbin/zinit init`). Note that the entrypoint should already be set by default when you open the micro VM page. 
 
@@ -87,7 +87,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
 * In the section `Config`, 
   * Choose a name for your VM under `Name`.
   * Under `VM Image`, select `Other`.
-    * Enter the Nextcloud FList under `FList`:
+    * Enter the Nextcloud flist under `flist`:
       * Template:
         * ```
           https://hub.grid.tf/<3BOT_name.3bot>/<docker_username>-<docker_image_name>-<tagname>.flist
@@ -128,6 +128,6 @@ Note that you can also use DDNS services such as [DuckDNS](https://www.duckdns.o
 
 ## Conclusion
 
-We've seen the overall process of creating a new FList to deploy a Nextcloud AIO workload on a Micro VM on the ThreeFold Playground.
+We've seen the overall process of creating a new flist to deploy a Nextcloud AIO workload on a Micro VM on the ThreeFold Playground.
 
 If you have any questions or feedback, please let us know by either writing a post on the [ThreeFold Forum](https://forum.threefold.io/), or by chatting with us on the [TF Grid Tester Community](https://t.me/threefoldtesting) Telegram channel.
