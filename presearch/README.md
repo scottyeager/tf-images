@@ -1,5 +1,5 @@
 ## Info
-This dockerfile creates docker image to deploy a presearch node. you only need the Registration code from your presearch account [read here](https://nodes.presearch.org/dashboard) where also you can check your node stats after deployment
+This dockerfile creates docker image to deploy a presearch node. You only need the Registration code from your presearch account [read here](https://nodes.presearch.org/dashboard) where also you can check your node stats after deployment
 
 The image uses `zinit` a service init manager to start `docker` & `ssh` services, then execute some scripts to run a presearch node
 
