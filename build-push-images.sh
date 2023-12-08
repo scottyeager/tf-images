@@ -30,7 +30,7 @@ source config.sh
 
 # First build our apt/deb based distros. The Docker images will also be used as
 # bases for many images below, so order matters
-if diffed_tags deb-base; then
+if diffed_tags ./deb-base; then
   for parent in ${deb_parents[@]}; do 
     name=ghcr.io/scottyeager/$parent
 
@@ -43,11 +43,20 @@ if diffed_tags deb-base; then
   done
 fi
 
+# Now build an image with minimal Docker install based on Ubuntu from above.
+# Will also be used as a base in some images below
+if diffed_tags ./ubuntu-docker; then
+  docker buildx build ./ubuntu-docker \
+                      --tag ghcr.io/scottyeager/ubuntu-docker
+  docker push ghcr.io/scottyeager/ubuntu-docker
+  tfhub_push ghcr.io/scottyeager/ubuntu-docker
+fi
+
 # Alpine can also be used as a base image, so build it separately too
 # TODO
 
 # Now build all the rest of the images
-image_dirs=$(ls -d */ | grep -v 'deb-base\|alpine')
+image_dirs=$(ls -d */ | grep -v 'deb-base\|alpine\|ubuntu-docker')
 
 for path in $image_dirs; do
   if diffed_tags $path; then
