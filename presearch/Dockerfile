@@ -1,9 +1,4 @@
-FROM ghcr.io/scottyeager/ubuntu:22.04
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt update && \
-    apt -y install docker.io
+FROM ghcr.io/scottyeager/ubuntu-docker:latest
 
 RUN mkdir -p /etc/zinit
 COPY zinit /etc/zinit
