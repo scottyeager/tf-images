@@ -1,7 +1,7 @@
 FROM ubuntu AS bootstrap
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends arch-install-scripts debootstrap
+    apt-get install -y --no-install-recommends debootstrap
 
 RUN mkdir ubuntu:jammy
 

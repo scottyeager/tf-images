@@ -1,18 +1,18 @@
 #!/bin/bash
 
+# Build the image from Dockerfile
 docker buildx build -t ubuntu:gridfullvm .
 
+# Extract image into tar archive
 container=$(docker create ubuntu:gridfullvm bash)
 docker export $container --output=ubuntu-fullvm.tar
 docker rm $container
 
-mkdir rootfs
-sudo tar xf ubuntu-fullvm.tar -C rootfs
-# If we don't do this, systemd thinks it's booting in a Docker container
-sudo rm rootfs/.dockerenv
-# Fix systemd DNS
-sudo rm rootfs/etc/resolv.conf
-sudo ln -s /run/systemd/resolve/resolv.conf rootfs/etc/resolv.conf
-sudo tar czf ubuntu-fullvm.tar.gz -C rootfs .
-sudo rm -rf rootfs
+# Run touchup script, using Docker to avoid `sudo`
+container=$(docker create --entrypoint /touchup.sh ubuntu)
+docker cp ubuntu-fullvm.tar $container:/
+docker cp touchup.sh $container:/
+docker start -a $container
+docker cp $container:/ubuntu-fullvm.tar.gz ./
+docker rm $container
 rm ubuntu-fullvm.tar
