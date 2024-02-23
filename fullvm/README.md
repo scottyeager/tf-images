@@ -2,21 +2,22 @@
 
 Use this to generate an Ubuntu full VM image for direct kernel booting. It's an alternative to the process shown [here](https://github.com/threefoldtech/zos/blob/main/docs/manual/zmachine/zmachine.md#vm), but done entirely in Docker containers.
 
-To build the default image, just:
+To build an image, run the build script and pass the name of the folder. For example, to build the minimal image, do:
 
 ```
-./build.sh
+./build.sh ubuntu-minimal
 ```
 
-The output is a compressed tar archive `ubuntu-fullvm.tar.gz`, which is ready for upload to [the Hub](https://hub.grid.tf/upload).
+The output is a compressed tar archive inside the given folder, which is ready for upload to [the Hub](https://hub.grid.tf/upload).
 
+The build script will also leave a Docker image on your system with the same name. This image can be run in Docker for limited testing and debug, but since it's not actually started with `systemd` you won't get the full experience.
 
 ## Hacking
 
-Any customizations should be done during the second phase, `FROM scratch`. Just place any `apt` commands before the final cleanup steps to make sure the package lists are there.
+To make a new image, just copy one folder and make your customizations in the Dockerfile. Most changes should go in the heredoc'd script section (`RUN <<EOF`). 
 
-The script will leave a Docker image `ubuntu:gridfullvm` on your system. You can do a `docker run -it ubuntu:gridfullvm bash` to check this out and play around, but since it's not actually started with `systemd` you won't get the full experience.
-
+Once you build the image, it's possible to use `docker run -it <image name> bash` to have a look around, but to actually test how the image runs as a VM, see the next section.
+ 
 ## Testing in QEMU
 
 A fuller test can be done by running the output as a VM with QEMU. Some scripts are included to help with this, under `vm`. You'll need `qemu-system` and `qemu-img` installed for this part.
@@ -26,7 +27,8 @@ After running `build.sh`, run all three scripts:
 ```
 cd vm
 ./seed.sh
-./mk-img.sh ../ubuntu-fullvm.tar.gz
+./mk-img.sh ../ubuntu-minimal/ubuntu-minimal.tar.gz
+mv ubuntu-minimal.qcow ubuntu-base.qcow
 ./run.sh
 ```
 
