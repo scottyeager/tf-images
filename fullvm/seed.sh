@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ssh_keypath=$(echo ~/.ssh/id*.pub | head -n 1)
+
 cat << EOF > meta-data
 #cloud-config
 instance-id: iid-local01
@@ -10,7 +12,7 @@ cat << EOF > user-data
 users:
 - name: root
   ssh_authorized_keys:
-    - $(cat ~/.ssh/id_rsa.pub)
+    - $(cat $ssh_keypath)
 EOF
 
 genisoimage -output seed.img -volid cidata -joliet -rock user-data meta-data
