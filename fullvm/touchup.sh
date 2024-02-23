@@ -8,7 +8,7 @@
 # we run it in a container and thus don't worry about cleanup
 
 mkdir rootfs
-tar xf ubuntu-fullvm.tar -C rootfs
+tar xf $ARCHIVE -C rootfs
 
 # If we don't do this, systemd thinks it's booting in a Docker container
 rm rootfs/.dockerenv
@@ -30,4 +30,4 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 EOF
 
-tar czf ubuntu-fullvm.tar.gz -C rootfs .
+tar czf ${ARCHIVE}.gz -C rootfs .
