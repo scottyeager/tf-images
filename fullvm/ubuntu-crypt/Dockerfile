@@ -18,7 +18,7 @@ ARG KERNEL=5.19.0-50-generic
 RUN <<EOF 
 DEBIAN_FRONTEND=noninteractive \
     apt-get update && \
-    apt-get install -y --no-install-recommends cloud-init openssh-server curl linux-modules-${KERNEL} initramfs-tools binutils lsb-release locales libpam-systemd less overlayroot
+    apt-get install -y --no-install-recommends cloud-init openssh-server curl linux-modules-${KERNEL} linux-image-${KERNEL} initramfs-tools binutils lsb-release locales libpam-systemd less overlayroot
 
 
 echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
