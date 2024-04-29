@@ -1,6 +1,6 @@
 FROM ubuntu:22.04 as build
 
-ARG crystalcommit=30061c98
+ARG crystalcommit=541f9a67
 
 RUN apt update && apt install -y build-essential git
 
