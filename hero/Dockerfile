@@ -1,4 +1,34 @@
+FROM ubuntu:22.04 as build
+
+ARG crystalcommit=30061c98
+
+RUN apt update && apt install -y build-essential git
+
+RUN git clone https://github.com/vlang/v 
+
+WORKDIR /v
+RUN make 
+RUN ./v symlink
+RUN mkdir -p /root/.vmodules/freeflowuniverse
+
+WORKDIR /
+RUN git clone https://github.com/freeflowuniverse/crystallib.git
+
+WORKDIR /crystallib
+RUN git checkout $crystalcommit
+
+WORKDIR /
+RUN ln -s /crystallib/crystallib /root/.vmodules/freeflowuniverse
+
+RUN git clone https://github.com/freeflowuniverse/webcomponents.git
+RUN ln -s /webcomponents/webcomponents /root/.vmodules/freeflowuniverse
+
+WORKDIR /crystallib/cli/hero
+RUN v -cg -enable-globals -w -cflags -static -cc gcc hero.v
+
 FROM ghcr.io/scottyeager/ubuntu:22.04
+
+COPY --from=build /crystallib/cli/hero/hero /usr/local/bin/hero
 
 # A few of these are for optional hero features, but hero will install all
 # packages from this list in the course of a basic mdbook operation
@@ -20,10 +50,6 @@ RUN apt update && apt install -y --no-install-recommends \
 				 git-lfs \
 				 imagemagick \
     && rm -rf /var/lib/apt/lists/*
-
-# Install hero from precompiled binary
-RUN wget -O /usr/local/bin/hero https://f003.backblazeb2.com/file/threefold/linux-i64/hero
-RUN chmod +x /usr/local/bin/hero
 
 # Hero's gonna try to write to this file, so it better exist
 RUN mkdir /root/.ssh
