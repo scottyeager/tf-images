@@ -55,13 +55,15 @@ RUN apt update && apt install -y --no-install-recommends \
 RUN mkdir /root/.ssh
 RUN touch /root/.ssh/known_hosts
 
-# Install Rust
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Install Rust, mdbook, and plugins
+# Do it all in one layer and remove toolchain at the end to keep image slim
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y && \
+    . "$HOME/.cargo/env" && \
+    cargo install mdbook mdbook-mermaid mdbook-echarts mdbook-kroki-preprocessor && \
+    cargo install mdbook-pdf --features fetch && \
+    rustup toolchain remove stable-x86_64-unknown-linux-gnu
 
-# Install mdbook and plugins
-RUN cargo install mdbook mdbook-mermaid mdbook-echarts mdbook-kroki-preprocessor 
-RUN cargo install mdbook-pdf --features fetch
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Enable auto ssh-agent when we start bash
 COPY bashrc /
