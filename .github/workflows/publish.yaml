@@ -1,8 +1,6 @@
 name: Publish Images
 on:
   push:
-    tags:
-      - v*
 
 jobs:
   publish:
