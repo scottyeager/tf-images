@@ -45,7 +45,8 @@ fi
 
 # Now build an image with minimal Docker install based on Ubuntu from above.
 # Will also be used as a base in some images below
-if diffed_tags ./ubuntu-docker; then
+# Rebuild on changes to the Ubuntu base too
+if diffed_tags ./ubuntu-docker || diffed_tags ./deb-base; then
   docker buildx build ./ubuntu-docker \
                       --tag ghcr.io/scottyeager/ubuntu-docker
   docker push ghcr.io/scottyeager/ubuntu-docker
@@ -53,7 +54,12 @@ if diffed_tags ./ubuntu-docker; then
 fi
 
 # Alpine can also be used as a base image, so build it separately too
-# TODO
+if diffed_tags ./alpine; then
+  docker buildx build ./alpine \
+                      --tag ghcr.io/scottyeager/alpine
+  docker push ghcr.io/scottyeager/alpine
+  tfhub_push ghcr.io/scottyeager/alpine
+fi
 
 # Now build all the rest of the images
 image_dirs=$(ls -d */ | grep -v 'deb-base\|alpine\|ubuntu-docker')
