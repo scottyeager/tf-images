@@ -12,9 +12,8 @@ RUN apt update && apt install -y --no-install-recommends \
                                  ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Remove auto generated host keys and create privilege separation directory
+# Remove auto generated host keys
 RUN rm /etc/ssh/ssh_host_*
-RUN mkdir /var/run/sshd
 
 # Create symlinks to busybox for any missing commands. Packaged versions from
 # apt installed later will overwrite the symlinks, thus taking preference
