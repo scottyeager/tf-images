@@ -75,6 +75,11 @@ for path in $image_dirs; do
       break
     fi
     parent=$(cat ${parent}/Dockerfile | head -n 1 | cut -d / -f 3 | cut -d : -f 1)
+    # It's somewhat accidental that this works, since deb-base's Dockerfile 
+    # itself has a first line containing "ubuntu", but it works
+    if [ "$parent" = ubuntu ] || [ "$parent" = debian ]; then
+      parent=deb-base
+    fi
   done
   if $rebuild; then
     name=ghcr.io/scottyeager/${path///} # Strip trailing / from paths
