@@ -1,6 +1,5 @@
 FROM alpine:latest
-RUN apk add --no-cache openssh \
-    && echo 'root:*' | chpasswd -e
+RUN apk add --no-cache openssh
 
 # Install zinit, our pid 1
 ARG ZINIT_VERSION=0.2.14
