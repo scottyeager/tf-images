@@ -62,10 +62,21 @@ if diffed_tags ./alpine; then
 fi
 
 # Now build all the rest of the images
+# TODO: also rebuild images when base images change
 image_dirs=$(ls -d */ | grep -v 'deb-base\|alpine\|ubuntu-docker')
 
 for path in $image_dirs; do
-  if diffed_tags $path; then
+  # Check for changes in any parent and if so rebuild
+  rebuild=false
+  parent=$path
+  while [ -f "${parent}/Dockerfile" ]; do
+    if diffed_tags $parent; then
+      rebuild=true
+      break
+    fi
+    parent=$(cat ${parent}/Dockerfile | head -n 1 | cut -d / -f 3 | cut -d : -f 1)
+  done
+  if $rebuild; then
     name=ghcr.io/scottyeager/${path///} # Strip trailing / from paths
 
     docker buildx build $path \

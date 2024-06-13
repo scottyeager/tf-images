@@ -26,6 +26,5 @@ RUN wget https://github.com/threefoldtech/zinit/releases/download/v$ZINIT_VERSIO
 
 # Copy in the zinit unit files and scripts, to setup and start sshd
 COPY zinit /etc/zinit
-COPY ssh-init.sh / 
 
 ENTRYPOINT  ["zinit", "init"]
