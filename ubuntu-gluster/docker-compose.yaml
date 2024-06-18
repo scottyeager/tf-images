@@ -1,0 +1,22 @@
+services:
+  gluster1:
+    image: ${IMAGE_NAME}
+    privileged: true
+    environment:
+      ME: "gluster1"
+      PEER1: "gluster2"
+      PEER2: "gluster3"
+  gluster2:
+    image: ${IMAGE_NAME}
+    privileged: true
+    environment:
+      ME: "gluster2"
+      PEER1: "gluster1"
+      PEER2: "gluster3"
+  gluster3:
+    image: ${IMAGE_NAME}
+    privileged: true
+    environment:
+      ME: "gluster3"
+      PEER1: "gluster1"
+      PEER2: "gluster2"
