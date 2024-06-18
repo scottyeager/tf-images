@@ -3,7 +3,7 @@
 mkdir -p /data/gv0
 mkdir /mnt/gluster
 
-if [ $ME == gluster1 ]; then
+if [ $LEADER ]; then
   sleep $TIMEOUT1
   gluster peer probe $PEER1
   gluster peer probe $PEER2

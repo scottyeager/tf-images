@@ -3,6 +3,7 @@ services:
     image: ${IMAGE_NAME}
     privileged: true
     environment:
+      LEADER: "true"
       ME: "gluster1"
       PEER1: "gluster2"
       PEER2: "gluster3"
@@ -10,6 +11,7 @@ services:
     image: ${IMAGE_NAME}
     privileged: true
     environment:
+      LEADER: "false"
       ME: "gluster2"
       PEER1: "gluster1"
       PEER2: "gluster3"
@@ -17,6 +19,7 @@ services:
     image: ${IMAGE_NAME}
     privileged: true
     environment:
+      LEADER: "false"
       ME: "gluster3"
       PEER1: "gluster1"
       PEER2: "gluster2"
