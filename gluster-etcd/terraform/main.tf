@@ -21,7 +21,7 @@ variable "network" {
 
 locals {
   name = "wgtest"
-  flist = "https://hub.grid.tf/scott.3bot/ghcr.io-scottyeager-ubuntu-gluster-latest.flist"
+  flist = "https://hub.grid.tf/scott.3bot/ghcr.io-scottyeager-gluster-etcd-latest.flist"
   node1 = 14
   node2 = 15
   node3 = 16
