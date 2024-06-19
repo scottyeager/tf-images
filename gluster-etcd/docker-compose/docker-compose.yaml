@@ -1,0 +1,37 @@
+services:
+  machine1:
+    image: $IMAGE_NAME
+    privileged: true
+    environment:
+      LEADER: "true"
+      ME: "machine1"
+      PEER1: "machine2"
+      PEER2: "machine3"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
+      ETCD_INITIAL_CLUSTER: $ETCD_INITIAL_CLUSTER
+      ETCD_CLUSTER_TOKEN: $ETCD_CLUSTER_TOKEN
+  machine2:
+    image: $IMAGE_NAME
+    privileged: true
+    environment:
+      LEADER: "false"
+      ME: "machine2"
+      PEER1: "machine1"
+      PEER2: "machine3"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
+      ETCD_INITIAL_CLUSTER: $ETCD_INITIAL_CLUSTER
+      ETCD_CLUSTER_TOKEN: $ETCD_CLUSTER_TOKEN
+  machine3:
+    image: $IMAGE_NAME
+    privileged: true
+    environment:
+      LEADER: "false"
+      ME: "machine3"
+      PEER1: "machine1"
+      PEER2: "machine2"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
+      ETCD_INITIAL_CLUSTER: $ETCD_INITIAL_CLUSTER
+      ETCD_CLUSTER_TOKEN: $ETCD_CLUSTER_TOKEN
