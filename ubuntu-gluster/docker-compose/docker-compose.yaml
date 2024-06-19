@@ -7,6 +7,8 @@ services:
       ME: "gluster1"
       PEER1: "gluster2"
       PEER2: "gluster3"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
   gluster2:
     image: ${IMAGE_NAME}
     privileged: true
@@ -15,6 +17,8 @@ services:
       ME: "gluster2"
       PEER1: "gluster1"
       PEER2: "gluster3"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
   gluster3:
     image: ${IMAGE_NAME}
     privileged: true
@@ -23,3 +27,5 @@ services:
       ME: "gluster3"
       PEER1: "gluster1"
       PEER2: "gluster2"
+      TIMEOUT1: $TIMEOUT1
+      TIMEOUT2: $TIMEOUT2
