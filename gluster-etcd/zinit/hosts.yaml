@@ -1,7 +1,7 @@
 exec: |
   bash -c '
-    if ! grep -q $HOSTS /etc/hosts; then
-      echo $HOSTS >> /etc/hosts
+    if ! grep -q "$HOSTS" /etc/hosts; then
+      echo "$HOSTS" >> /etc/hosts
     fi
   '
 oneshot: true
