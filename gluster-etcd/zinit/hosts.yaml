@@ -1,6 +1,8 @@
 exec: |
   bash -c '
-    # We can't just do a simple grep on $HOSTS here, because it can have a trailing new line and then grep will match every line on that. This technically matches both the host names and IPs separately, but it does what's needed, which is ensuring the script only runs once
+    # Make sure the script only runs once. Bit of a hack but it works
+    # Just grepping on $HOSTS does not work because there can be a trailing newline
+    # and grep matches each line individually, so newline matches all
     for token in $HOSTS; do
       if ! grep -q $token /etc/hosts; then
         echo "$HOSTS" >> /etc/hosts
