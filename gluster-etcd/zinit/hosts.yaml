@@ -1,13 +1,2 @@
-exec: |
-  bash -c '
-    # Make sure the script only runs once. Bit of a hack but it works
-    # Just grepping on $HOSTS does not work because there can be a trailing newline
-    # and grep matches each line individually, so newline matches all
-    for token in $HOSTS; do
-      if ! grep -q $token /etc/hosts; then
-        echo "$HOSTS" >> /etc/hosts
-        break
-      fi
-    done
-  '
+exec: /scripts/hosts.sh
 oneshot: true

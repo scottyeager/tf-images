@@ -14,7 +14,11 @@ RUN wget https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-
     rm -r etcd-${ETCD_VERSION}-linux-amd64.tar.gz etcd-${ETCD_VERSION}-linux-amd64
 
 COPY zinit /etc/zinit
-COPY gluster-init.sh /
-RUN chmod +x /gluster-init.sh
-COPY etcd.sh /
-RUN chmod +x /etcd.sh
+
+WORKDIR /scripts
+COPY gluster-init.sh ./
+COPY etcd.sh ./
+COPY hosts.sh ./
+RUN chmod +x ./*
+
+WORKDIR /

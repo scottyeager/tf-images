@@ -1,2 +1,2 @@
-exec: /etcd.sh
+exec: /scripts/etcd.sh
 after: [hosts]
