@@ -25,10 +25,15 @@ locals {
   node1 = 14
   node2 = 15
   node3 = 16
-  timeout1 = 10
+  timeout1 = 15
   timeout2 = 20
-  etcd_initial_cluster = "machine1=http://10.21.2.2:2380,machine2=http://10.21.3.2:2380,machine3=http://10.21.4.2:2380"
+  etcd_initial_cluster = "vm1=http://10.21.2.2:2380,vm2=http://10.21.3.2:2380,vm3=http://10.21.4.2:2380"
   etcd_cluster_token = "cluster1"
+  hosts = <<-EOT
+    10.21.2.2	vm1
+    10.21.3.2	vm2
+    10.21.4.2	vm3
+  EOT
 }
 
 
@@ -59,13 +64,14 @@ resource "grid_deployment" "d1" {
     env_vars = {
       SSH_KEY = file("~/.ssh/id_rsa.pub")
       LEADER = "true"
-      ME = "10.21.2.2"
-      PEER1 = "10.21.3.2"
-      PEER2 = "10.21.4.2"
+      ME = "vm1"
+      PEER1 = "vm2"
+      PEER2 = "vm3"
       TIMEOUT1 = local.timeout1
       TIMEOUT2 = local.timeout2
       ETCD_INITIAL_CLUSTER = local.etcd_initial_cluster
       ETCD_CLUSTER_TOKEN = local.etcd_cluster_token
+      HOSTS = local.hosts
     }
     mounts {
         disk_name = "data"
@@ -93,13 +99,14 @@ resource "grid_deployment" "d2" {
     env_vars = {
       SSH_KEY = file("~/.ssh/id_rsa.pub")
       LEADER = "false"
-      ME = "10.21.3.2"
-      PEER1 = "10.21.2.2"
-      PEER2 = "10.21.4.2"
+      ME = "vm2"
+      PEER1 = "vm1"
+      PEER2 = "vm3"
       TIMEOUT1 = local.timeout1
       TIMEOUT2 = local.timeout2
       ETCD_INITIAL_CLUSTER = local.etcd_initial_cluster
       ETCD_CLUSTER_TOKEN = local.etcd_cluster_token
+      HOSTS = local.hosts
     }
     mounts {
         disk_name = "data"
@@ -127,13 +134,14 @@ resource "grid_deployment" "d3" {
     env_vars = {
       SSH_KEY = file("~/.ssh/id_rsa.pub")
       LEADER = "false"
-      ME = "10.21.4.2"
-      PEER1 = "10.21.2.2"
-      PEER2 = "10.21.3.2"
+      ME = "vm3"
+      PEER1 = "vm1"
+      PEER2 = "vm2"
       TIMEOUT1 = local.timeout1
       TIMEOUT2 = local.timeout2
       ETCD_INITIAL_CLUSTER = local.etcd_initial_cluster
       ETCD_CLUSTER_TOKEN = local.etcd_cluster_token
+      HOSTS = local.hosts
     }
     mounts {
         disk_name = "data"
