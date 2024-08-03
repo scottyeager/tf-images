@@ -1,4 +1,4 @@
-FROM ghcr.io/scottyeager/ubuntu-docker:22.04
+FROM ghcr.io/scottyeager/ubuntu-docker:latest
 
 RUN apt update && \
   apt install -y --no-install-recommends ufw inotify-tools
