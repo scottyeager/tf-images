@@ -19,3 +19,5 @@ RUN apt update && \
     # Skip compose and buildx. Users can install later if needed
     apt install --no-install-recommends -y docker-ce docker-ce-cli containerd.io && \
     rm -rf /var/lib/apt/lists/*
+
+COPY zinit /etc/zinit
