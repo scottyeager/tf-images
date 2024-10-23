@@ -11,14 +11,15 @@ sudo rm -rf tmp/*
 cd tmp
 mkdir mnt
 
-dd if=/dev/null of=tmp.img bs=1M seek=1024
+dd if=/dev/null of=tmp.img bs=1M seek=2048
 mkfs.ext3 tmp.img
 
 sudo mount -t ext3 -o loop tmp.img mnt
 
 sudo tar xf $archive -C mnt
-cp mnt/boot/initrd.img ./
-cp mnt/boot/vmlinuz ./
+sudo cp mnt/boot/initrd.img ./
+sudo cp mnt/boot/vmlinuz ./
+sudo chmod +r vmlinuz
 
 sudo umount mnt
 qemu-img convert -O qcow2 tmp.img image.qcow
