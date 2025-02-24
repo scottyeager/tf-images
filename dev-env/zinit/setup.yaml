@@ -1,0 +1,2 @@
+exec: bash scripts/setup.sh
+oneshot: true

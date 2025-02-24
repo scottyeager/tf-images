@@ -1,0 +1,3 @@
+# $PASSWORD will be used if set, otherwise a random password will be generated
+exec: bash /scripts/code-server.sh
+after: [setup]
