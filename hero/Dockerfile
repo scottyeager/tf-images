@@ -7,9 +7,6 @@ RUN chmod +x /usr/local/bin/hero
 
 RUN curl -fsSL https://bun.sh/install | bash
 
-# Enable auto ssh-agent when we start bash
-COPY bashrc /
-RUN cat /bashrc >> /root/.bashrc && rm /bashrc
 RUN mkdir /root/.ssh
 
 COPY start.sh /
