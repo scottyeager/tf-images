@@ -1,5 +1,5 @@
 #!/bin/bash
-redis-server &> /var/log/redis.log & disown
+redis-server --daemonize yes
 
 # Start SSH agent
 
@@ -26,4 +26,6 @@ else
     start_agent;
 fi
 
-exec bash
+# This way we can pass commands to the container, such as "sleep infinity", or
+# pass no commands and run in interactive mode to get a shell
+exec bash -c "$@"
