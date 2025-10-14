@@ -16,6 +16,18 @@ docker run --network host -it -v ~/.ssh/id_rsa:/root/ssh/id_rsa hero-git
 
 Once inside the container, you'll have a `hero` binary available and all required dependencies to work on Docusaurus projects.
 
+To use a given workspace, you can run:
+
+```
+docker run --network host -it -v $(pwd):/workspace -v ~/.ssh/id_rsa:/root/ssh/id_rsa hero-git
+```
+
+For example, if you run command from the docs_tfgrid4 repo directory, you can then use docusaurus with:
+
+```
+hero docs -path /workspace/ebooks/mycelium_society -d
+```
+
 ## SSH Keys
 
 If you want to work on private repos or publish, you will need to add SSH keys to hero. Any SSH key mounted into `/root/ssh` will be added to the ssh-agent inside the container for use by hero.
