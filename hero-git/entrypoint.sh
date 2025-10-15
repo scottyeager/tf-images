@@ -13,10 +13,10 @@ ssh-add /root/.ssh/*
 # system (it will fail for ownership reasons anyway)
 rm -f /root/.vmodules/freeflowuniverse/herolib
 if [ -d "/opt/herolib_mount" ]; then
-    ln -s /opt/herolib_mount/lib /root/.vmodules/freeflowuniverse/herolib
+    ln -s /opt/herolib_mount/lib /root/.vmodules/incubaid/herolib
     cd /opt/herolib_mount
 else
-    ln -s /opt/herolib/lib /root/.vmodules/freeflowuniverse/herolib
+    ln -s /opt/herolib/lib /root/.vmodules/incubaid/herolib
     cd /opt/herolib
     git fetch
     git checkout "${HEROLIB_REF:-development}"
