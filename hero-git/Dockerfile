@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS base
 
 # Includes a bunch of stuff hero will try to install later, so we don't have to
 # do that on each new container launch
@@ -14,6 +14,8 @@ RUN curl -fsSL https://bun.sh/install | bash
 
 RUN git clone https://github.com/Incubaid/herolib /opt/herolib
 
+RUN git clone https://github.com/incubaid/docusaurus_template /root/code/github/incubaid/docusaurus_template
+
 RUN mkdir -p /root/.vmodules/incubaid
 
 # Make a place for users to mount their ssh key file. We will copy to .ssh and
@@ -23,5 +25,12 @@ RUN mkdir -p /root/ssh
 COPY entrypoint.sh /bin/entrypoint.sh
 
 RUN chmod +x /bin/entrypoint.sh
+
+# Make a new stage so we can invalidate the cache by passing --no-cache-filter
+FROM base AS fetch
+
+# Fetch to freshen the repos with minimal work
+RUN cd /opt/herolib && git fetch
+RUN cd /root/code/github/incubaid/docusaurus_template && git fetch
 
 ENTRYPOINT ["/bin/entrypoint.sh"]

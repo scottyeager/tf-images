@@ -41,3 +41,13 @@ Note that `HEROLIB_REF` will be ignored in this case. Controlling git from outsi
 ## Host networking
 
 Using host networking (`--network host`) as shown above is recommended to be able to access the development server started by hero for documentation projects. Currently port mapping with regular Docker networking is not supported.
+
+## Refresh the git repos
+
+As new changes come into the herolib and docusaurus template repos, you might want to update your image to avoid pulling these changes each time the container starts. The Dockerfile uses stages to provide an efficient way to accomplish this. Just run:
+
+```
+docker buildx build --no-cache-filter fetch -t hero .
+```
+
+This will use the cached layers for most of the build, but will always fetch the latest changes into the git repos.
