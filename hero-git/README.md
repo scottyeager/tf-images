@@ -51,3 +51,11 @@ docker buildx build --no-cache-filter fetch -t hero .
 ```
 
 This will use the cached layers for most of the build, but will always fetch the latest changes into the git repos.
+
+## Refresh the bun cache
+
+This image warms the cache of node modules used by bun, to speed Docusaurus runs. You can also invalidate the cache before this step, which will result in the template repo being cloned fresh before caching the node modules again:
+
+```
+docker buildx build --no-cache-filter clone -t hero .
+```

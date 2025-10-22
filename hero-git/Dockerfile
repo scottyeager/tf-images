@@ -12,9 +12,15 @@ RUN wget https://github.com/vlang/v/releases/latest/download/v_linux.zip && \
 # Install bun.sh for docusaurus
 RUN curl -fsSL https://bun.sh/install | bash
 
+# Make a new stage so we can invalidate the cache by passing --no-cache-filter
+FROM base AS clone
+
 RUN git clone https://github.com/Incubaid/herolib /opt/herolib
 
 RUN git clone https://github.com/incubaid/docusaurus_template /root/code/github/incubaid/docusaurus_template
+
+# Warm the bun node modules cache
+RUN cd /root/code/github/incubaid/docusaurus_template/template && /root/.bun/bin/bun install
 
 RUN mkdir -p /root/.vmodules/incubaid
 
@@ -27,10 +33,11 @@ COPY entrypoint.sh /bin/entrypoint.sh
 RUN chmod +x /bin/entrypoint.sh
 
 # Make a new stage so we can invalidate the cache by passing --no-cache-filter
-FROM base AS fetch
+FROM clone AS fetch
 
 # Fetch to freshen the repos with minimal work
 RUN cd /opt/herolib && git fetch
 RUN cd /root/code/github/incubaid/docusaurus_template && git fetch
+
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
